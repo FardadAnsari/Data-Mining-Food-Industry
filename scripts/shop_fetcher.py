@@ -118,10 +118,10 @@ class ShopFetcher:
 # ---- Run directly or import elsewhere ----
 if __name__ == "__main__":
     fetcher = ShopFetcher(
-        start_id=880068,
+        start_id=884692,
         end_id=1_000_001,
-        use_proxy=False,
-        proxy_file="",
+        use_proxy=True,
+        proxy_file="config/proxies.txt",
         output_dir="data",
         batch_size=1000,
         max_workers=50,
