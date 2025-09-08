@@ -3,11 +3,6 @@ import requests
 import logging
 
 class foodhub_api:
-
-
-
-
-
     def __init__(self):
         self.HEADERS = {
             "franchise": "foodhub.co.uk",
@@ -24,7 +19,7 @@ class foodhub_api:
             filemode="a",
             format="%(asctime)s [%(levelname)s] %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
-            level=logging.INFO  # یا DEBUG برای اطلاعات بیشتر
+            level=logging.INFO
         )
 
 
