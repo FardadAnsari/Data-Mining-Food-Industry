@@ -56,13 +56,8 @@ class ShopFetcherCoordinate:
             for shop in data:
                 shop_id = shop.get("id")
                 filename = os.path.join(self.output_dir, f"{shop_id}.json")
-                try:
-                    with open(filename, "w", encoding="utf-8") as f:
-                        json.dump(data, f, ensure_ascii=False, indent=4)
-                    print(f"✅ Saved shop data for coordinates {latitude}, {longitude}")
-                except Exception as e:
-                    print(f"❌ Error saving shop data for coordinates {latitude}, {longitude}: {e}")
-
+                with open(filename, "w", encoding="utf-8") as f:
+                    json.dump(shop, f, ensure_ascii=False, indent=4)
         else:
             print(f"❌ Empty or invalid for coordinates {latitude}, {longitude}")
 
@@ -74,9 +69,11 @@ class ShopFetcherCoordinate:
     async def run(self):
         loop = asyncio.get_running_loop()
         coordinates = self.load_coordinates(self.coordinates_file)
+        print(f"Total coordinates to process: {len(coordinates)}")
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             tasks = []
             for coord in coordinates:
+                print(f"------- Processing coordinates: {coord} -------")
                 lat, lon = map(str.strip, coord.split(","))
                 task = loop.run_in_executor(executor, self._fetch_and_save, lat, lon)
                 tasks.append(task)
@@ -100,7 +97,7 @@ if __name__ == "__main__":
     fetcher = ShopFetcherCoordinate(
         coordinates_file="config/cord_G.txt",
         output_dir="data",
-        batch_size=1000,
-        max_workers=50,
+        batch_size=100,
+        max_workers=5,
     )
     asyncio.run(fetcher.run())
